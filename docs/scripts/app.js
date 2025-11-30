@@ -4,7 +4,7 @@
 ============================================================
 */
 
-import { router } from "./router.js";
+import { router } from "../../docs/scripts/router.js";
 
 export const store = {
     user: null,
