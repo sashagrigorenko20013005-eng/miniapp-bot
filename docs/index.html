@@ -11,10 +11,33 @@
 </head>
 
 <body>
+    <div class="waves-bg">
+        <div class="mist"></div>
+
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+</div>
+
     <div id="app"></div>
 
     <!-- ВАЖНО: путь тоже должен начинаться с ./ -->
     <script type="module" src="./scripts/app.js"></script>
+    <script>
+document.addEventListener("scroll", () => {
+    const waves = document.querySelectorAll(".wave");
+    const scrollY = window.scrollY;
+
+    waves.forEach((wave, i) => {
+        const depth = (i + 1) * 0.6; // чем ниже волна — тем сильнее смещение
+        wave.style.transform = `translateY(${scrollY * depth * 0.02}px)`;
+    });
+});
+</script>
 
     <div class="haze"></div>
 </body>

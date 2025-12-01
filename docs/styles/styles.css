@@ -42,68 +42,83 @@ body {
     overflow-x: hidden;
 }
 
-/* Анимированная волна */
-body::before {
-    content: "";
+/* =========================================================
+   ROSE GOLD MULTI-WAVE BACKGROUND (7 floating waves)
+   Premium Beauty Style — soft, animated, full-height waves
+========================================================= */
+/* ===============================================
+   PREMIUM ROSE GOLD — WAVES + PURPLE MIST + PARALLAX
+   =============================================== */
+
+.waves-bg {
     position: fixed;
-    top: -10%;
-    left: -25%;
-    width: 150%;
-    height: 280px;
-
-    background: radial-gradient(circle, rgba(232,191,181,0.55), rgba(255,255,255,0));
-    clip-path: ellipse(60% 40% at 50% 50%);
-
-    animation: waveMotion 6s ease-in-out infinite;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
     z-index: -1;
     pointer-events: none;
 }
 
-@keyframes waveMotion {
+/* БАЗА ВОЛНЫ */
+.wave {
+    position: absolute;
+    width: 200%;
+    height: 22vh;
+    left: -50%;
+    opacity: 0.55;
+    background: radial-gradient(circle, rgb(77, 196, 236), rgba(255,255,255,0));
+    clip-path: ellipse(60% 45% at 50% 50%);
+    animation: waveFlow 7s ease-in-out infinite;
+    transition: transform 0.2s ease-out; /* Чтобы был parallax-эффект */
+}
+
+/* Индивидуальные слои (волн 7 штук) */
+.wave:nth-child(1){ top: 25%;   opacity: 0.50; animation-duration: 7s; }
+.wave:nth-child(2){ top: 65%;  opacity: 0.40; animation-duration: 9s; }
+.wave:nth-child(3){ top: 89%;  opacity: 0.36; animation-duration: 11s; }
+.wave:nth-child(4){ top: 85%;  opacity: 0.32; animation-duration: 8s; }
+.wave:nth-child(5){ top: 52%;  opacity: 0.30; animation-duration: 10s; }
+.wave:nth-child(6){ top: 66%;  opacity: 0.28; animation-duration: 12s; }
+.wave:nth-child(7){ top: 80%;  opacity: 0.25; animation-duration: 14s; }
+
+/* -----------------------------------------------
+   ФИОЛЕТОВЫЙ ТУМАН
+----------------------------------------------- */
+.mist {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    left: -50%;
+    top: -25%;
+    background: radial-gradient(circle, rgba(160, 90, 255, 0.18), transparent 70%);
+    filter: blur(80px);
+    animation: mistFloat 16s ease-in-out infinite;
+    z-index: -2;
+}
+
+/* -----------------------------------------------
+   Анимации
+----------------------------------------------- */
+@keyframes waveFlow {
     0% {
-        transform: translateX(-15%) translateY(0px);
+        transform: translateX(-15%) translateY(0);
     }
     50% {
         transform: translateX(15%) translateY(25px);
     }
     100% {
-        transform: translateX(-15%) translateY(0px);
+        transform: translateX(-15%) translateY(0);
     }
 }
-/* =========================================================
-   SECOND WAVE — DEEP LAYER
-   ========================================================= */
 
-body::after {
-    content: "";
-    position: fixed;
-    top: -15%;
-    left: -30%;
-    width: 160%;
-    height: 220px;
-
-    /* Более холодный оттенок розового золота */
-    background: radial-gradient(circle, rgba(255, 200, 215, 0.45), rgba(255,255,255,0));
-
-    /* Форма чуть уже — другая «частота» волны */
-    clip-path: ellipse(55% 35% at 50% 50%);
-
-    animation: waveMotion2 8s ease-in-out infinite;
-    z-index: -2;
-    pointer-events: none;
+@keyframes mistFloat {
+    0%   { transform: translateX(-10%) translateY(0); }
+    50%  { transform: translateX(10%) translateY(40px); }
+    100% { transform: translateX(-10%) translateY(0); }
 }
 
-@keyframes waveMotion2 {
-    0% {
-        transform: translateX(10%) translateY(0px);
-    }
-    50% {
-        transform: translateX(-10%) translateY(18px);
-    }
-    100% {
-        transform: translateX(10%) translateY(0px);
-    }
-}
+
 /* =========================================================
    SOFT PEARL HAZE (AIR MIST)
    ========================================================= */
