@@ -6,39 +6,80 @@
 
     <title>Салон Рея</title>
 
-    <!-- ВАЖНО: всегда ставим ./ перед путями -->
     <link rel="stylesheet" href="./styles/styles.css">
 </head>
 
 <body>
+
+    <!-- ФОН: волн и тумана -->
     <div class="waves-bg">
         <div class="mist"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
 
-        <div class="wave"></div>
-        <div class="wave"></div>
-        <div class="wave"></div>
-        <div class="wave"></div>
-        <div class="wave"></div>
-        <div class="wave"></div>
-        <div class="wave"></div>
-</div>
+    <!-- ЛЕПЕСТКИ -->
+    <div class="petal-container"></div>
 
+    <!-- ОСНОВНОЕ ПРИЛОЖЕНИЕ -->
     <div id="app"></div>
 
-    <!-- ВАЖНО: путь тоже должен начинаться с ./ -->
+    <!-- Основной JS -->
     <script type="module" src="./scripts/app.js"></script>
+
+    <!-- Параллакс волн -->
     <script>
-document.addEventListener("scroll", () => {
-    const waves = document.querySelectorAll(".wave");
-    const scrollY = window.scrollY;
+    document.addEventListener("scroll", () => {
+        const waves = document.querySelectorAll(".wave");
+        const scrollY = window.scrollY;
 
-    waves.forEach((wave, i) => {
-        const depth = (i + 1) * 0.6; // чем ниже волна — тем сильнее смещение
-        wave.style.transform = `translateY(${scrollY * depth * 0.02}px)`;
+        waves.forEach((wave, i) => {
+            const depth = (i + 1) * 0.6;
+            wave.style.transform = `translateY(${scrollY * depth * 0.02}px)`;
+        });
     });
-});
-</script>
+    </script>
 
-    <div class="haze"></div>
+    <!-- Лепестки -->
+    <script>
+    function createPetal() {
+        const container = document.querySelector('.petal-container');
+        if (!container) return;
+
+        const petal = document.createElement('div');
+        petal.classList.add('petal');
+
+        const inner = document.createElement('div');
+        inner.classList.add('petal-inner');
+
+        petal.appendChild(inner);
+
+
+        // форма 1–4
+        const shape = "shape" + (1 + Math.floor(Math.random() * 4));
+        petal.classList.add(shape);
+
+        petal.style.left = Math.random() * 100 + "vw";
+
+        const duration = 5 + Math.random() * 7;
+        petal.style.animationDuration = duration + "s, 3s";
+
+        const size = 10 + Math.random() * 15;
+        petal.style.width = size + "px";
+        petal.style.height = size * 1.3 + "px";
+
+        container.appendChild(petal);
+
+        setTimeout(() => petal.remove(), duration * 1000);
+    }
+
+    setInterval(createPetal, 700 + Math.random() * 400);
+    </script>
+
 </body>
 </html>
