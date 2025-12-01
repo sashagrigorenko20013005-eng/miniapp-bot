@@ -43,10 +43,6 @@ body {
 }
 
 /* =========================================================
-   ROSE GOLD MULTI-WAVE BACKGROUND (7 floating waves)
-   Premium Beauty Style — soft, animated, full-height waves
-========================================================= */
-/* =========================================================
    PREMIUM ROSE GOLD MULTI-WAVE BACKGROUND (7 floating waves)
    Soft, animated, full-height waves with seamless blending
 ========================================================= */
@@ -64,15 +60,16 @@ body {
 /* БАЗА ВОЛНЫ */
 .wave {
     position: absolute;
-    width: 200%;
-    height: 30vh; /* Увеличена высота для перекрытия пробелов */
-    left: -50%;
-    background: rgba(36, 254, 254, 0.942); /* Полупрозрачный розово-золотой */
-    clip-path: ellipse(50% 60% at 50% 50%); /* Более плавная форма */
+    width: 300%; /* Увеличиваем ширину, чтобы растянуть волны */
+    height: 30vh;
+    left: -100%; /* Сдвигаем влево, чтобы волны начинались за пределами экрана */
+    background: rgba(39, 227, 248, 0.904);
+    clip-path: ellipse(80% 60% at 50% 50%); /* Делаем волны шире и плавнее */
     animation: waveFlow 12s linear infinite;
     opacity: 0.6;
     transition: transform 0.2s ease-out;
 }
+
 
 /* Индивидуальные слои волн (7 штук) */
 .wave:nth-child(1) {
