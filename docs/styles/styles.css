@@ -58,7 +58,7 @@ body {
     overflow: hidden;
     z-index: -1;
     pointer-events: none;
-    background: linear-gradient(135deg, #d418f9, #dd18f3, #e120f7);
+    background: linear-gradient(135deg, #a708ecfc, #ad05ea, #a90cf8e7);
 }
 
 /* БАЗА ВОЛНЫ */
@@ -67,7 +67,7 @@ body {
     width: 200%;
     height: 30vh; /* Увеличена высота для перекрытия пробелов */
     left: -50%;
-    background: rgba(242, 16, 189, 0.948); /* Полупрозрачный розово-золотой */
+    background: rgba(36, 254, 254, 0.942); /* Полупрозрачный розово-золотой */
     clip-path: ellipse(50% 60% at 50% 50%); /* Более плавная форма */
     animation: waveFlow 12s linear infinite;
     opacity: 0.6;
