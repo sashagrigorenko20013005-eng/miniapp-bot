@@ -151,9 +151,9 @@ body {
     height: 100%;
     background: radial-gradient(
         circle at 30% 30%,
-        rgba(255, 237, 201, 0.95) 0%,
-        rgba(239, 193, 141, 0.85) 50%,
-        rgba(199, 140, 82, 0.75) 100%
+        rgba(244, 116, 116, 0.997) 0%,
+        rgb(241, 88, 88) 50%,
+        rgb(255, 0, 0) 100%
     );
     border-radius: inherit; /* Наследуем скругление от родителя */
     animation: windShake 3.5s ease-in-out infinite;
