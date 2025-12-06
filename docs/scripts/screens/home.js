@@ -1,39 +1,35 @@
-// screens/home.js
-// Главный экран — названия салона + адрес + кнопка "Записаться"
-// Формат: export default { render(), afterRender() }
+// home.js
+import { router } from '../router.js';
+import { getSettings, getBookings } from '../mock/api.js';
+import * as Anim from '../animations.js';
 
 export default {
-  render() {
+  async render() {
+    // simple home layout
     return `
-      <div class="container fade-in" style="padding-top:48px; text-align:center;">
-        <h1 class="salon-title" style="font-size:34px; margin-bottom:6px;">Салон кросоты "Рея"</h1>
-        <div class="salon-address" style="color:#6F6F6F; margin-bottom:36px;">Воронеж, улица Димитрова, 47</div>
+      <div class="home-container">
+        <h1 class="salon-title">Рея</h1>
+        <div class="salon-address">Воронеж, улица Димитрова, 47</div>
 
-        <button id="btnBook" class="btn-primary" style="max-width:360px; margin:0 auto; display:block;">
-          Записаться
-        </button>
+        <div style="height:24px"></div>
+
+        <button class="btn-primary" id="bookBtn">Записаться</button>
+        <div style="height:12px"></div>
+
+        <button class="btn-primary" id="viewBookingsBtn">Просмотреть записи</button>
+        <div style="height:12px"></div>
+
+        <button class="btn-primary" id="chatBtn">Связаться с администратором</button>
       </div>
     `;
   },
+  async afterRender() {
+    document.getElementById('bookBtn').addEventListener('click', ()=>router.navigate('/services'));
+    document.getElementById('viewBookingsBtn').addEventListener('click', ()=>router.navigate('/bookings'));
+    document.getElementById('chatBtn').addEventListener('click', ()=>router.navigate('/chat'));
 
-  afterRender() {
-    // Сбор базовой информации о пользователе из Telegram WebApp (если доступен),
-    // и сохранение в localStorage для последующей интеграции с бэкендом.
-    try {
-      const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user || null;
-      if (tgUser) {
-        localStorage.setItem("tg_user", JSON.stringify(tgUser));
-      }
-    } catch (e) {
-      // ничего — работа в обычном браузере
-    }
-
-    const btn = document.getElementById("btnBook");
-    if (btn) {
-      btn.addEventListener("click", () => {
-        // переход на список услуг
-        window.location.hash = "#/services";
-      });
-    }
+    // initialize animations based on settings
+    const s = await getSettings();
+    Anim.initAnimations({ defaultId: s.animation_id || 0, density: s.animation_density || 0.7, enabled: !!s.animation_enabled });
   }
 };

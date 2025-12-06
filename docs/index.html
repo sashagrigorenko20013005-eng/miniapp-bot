@@ -10,74 +10,18 @@
 </head>
 
 <body>
+<script type="module" src="./scripts/app.js"></script>
+<!-- animations module -->
+<script type="module">
+  import('./scripts/animations.js').then(mod => {
+    // init will be called from Home screen after settings fetch
+    // we expose setAnimationId globally for debug if needed
+    window._ANIM = mod;
+  }).catch(e=>console.warn('animations load failed', e));
+</script>
+<script type="module" src="./scripts/mock/api.js"></script>
 
-    <!-- ФОН: волн и тумана -->
-    <div class="waves-bg">
-        <div class="mist"></div>
-        <div class="wave"></div>
-        <div class="wave"></div>
-        <div class="wave"></div>
-        <div class="wave"></div>
-        <div class="wave"></div>
-        <div class="wave"></div>
-        <div class="wave"></div>
-    </div>
-
-    <!-- ЛЕПЕСТКИ -->
-    <div class="petal-container"></div>
-
-    <!-- ОСНОВНОЕ ПРИЛОЖЕНИЕ -->
-    <div id="app"></div>
-
-    <!-- Основной JS -->
-    <script type="module" src="./scripts/app.js"></script>
-
-    <!-- Параллакс волн -->
-    <script>
-    document.addEventListener("scroll", () => {
-        const waves = document.querySelectorAll(".wave");
-        const scrollY = window.scrollY;
-
-        waves.forEach((wave, i) => {
-            const depth = (i + 1) * 0.6;
-            wave.style.transform = `translateY(${scrollY * depth * 0.02}px)`;
-        });
-    });
-    </script>
-
-    <!-- Лепестки -->
-    <script>
-    function createPetal() {
-        const container = document.querySelector('.petal-container');
-        if (!container) return;
-
-        const petal = document.createElement('div');
-        petal.classList.add('petal');
-
-        const inner = document.createElement('div');
-        inner.classList.add('petal-inner');
-
-        petal.appendChild(inner);
-
-
-        // форма 1–4
-        const shape = "shape" + (1 + Math.floor(Math.random() * 4));
-        petal.classList.add(shape);
-
-        petal.style.left = Math.random() * 100 + "vw";
-
-        const duration = 5 + Math.random() * 7;
-        petal.style.animationDuration = duration + "s, 3s";
-
-        const size = 10 + Math.random() * 15;
-        petal.style.width = size + "px";
-        petal.style.height = size * 1.3 + "px";
-
-        container.appendChild(petal);
-
-        setTimeout(() => petal.remove(), duration * 1000);
-    }
-        setInterval(createPetal, Math.floor((700 + Math.random() * 400) / 3));
+    setInterval(createPetal, Math.floor((700 + Math.random() * 400) / 3));
 
     </script>
 

@@ -2,19 +2,30 @@
    PREMIUM ROSE GOLD BACKGROUND + WAVE ANIMATION
    ========================================================= */
 
-:root {
-    --container-width: 480px;
-
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 18px;
-
-    --transition-fast: 0.15s ease;
-    --transition-medium: 0.25s ease;
-
-    --color-text: #1c1c1e;
-    --color-text-secondary: #8e8e93;
+:root{
+  --bg: #ffffff;
+  --text: #000000;
+  --muted: #6f6f6f;
+  --gold-1: #E8BFB5;
+  --gold-2: #D9A79A;
+  --gold-dark: #C8925A;
 }
+body{ background: var(--bg); color: var(--text); }
+.btn-primary {
+  background: linear-gradient(135deg,var(--gold-1),var(--gold-2));
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 14px rgba(200,150,110,0.2);
+}
+.button-secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid #e6e6e6;
+}
+.calendar-item { background: #fff; }
+.time-slot.time-occupied { background: linear-gradient(135deg,var(--gold-1),var(--gold-2)); color:#fff; }
+.time-slot.time-parallel { box-shadow: inset 0 0 0 3px rgba(216,167,130,0.35); }
+
 
 /* Reset */
 * {
@@ -34,173 +45,58 @@ html, body {
 /* ---------------------------------------------------------
    MAIN BACKGROUND — ROSE GOLD + SMOOTH WAVE
    --------------------------------------------------------- */
+/* === Animations: snow & petals (separate styles) === */
 
-body {
-    background: linear-gradient(135deg, #FFF5F2, #FCE9E6, #F8DAD4);
-    background-attachment: fixed;
-    position: relative;
-    overflow-x: hidden;
+/* container */
+.anim-container { position: fixed; inset:0; pointer-events: none; z-index: 9999; }
+
+/* Snowflake style */
+.anim-snowflake {
+  position: absolute;
+  top: -6vh;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ffffff, #ffdca8 70%);
+  opacity: 0.95;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.06));
+  transform-origin: center;
+  animation: anim-snow-fall linear forwards;
+  will-change: transform, opacity;
 }
-
-/* =========================================================
-   PREMIUM ROSE GOLD MULTI-WAVE BACKGROUND (7 floating waves)
-   Soft, animated, full-height waves with seamless blending
-========================================================= */
-.waves-bg {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    z-index: -1;
-    pointer-events: none;
-    background: linear-gradient(135deg, #a708ecfc, #ad05ea, #a90cf8e7);
-}
-
-/* БАЗА ВОЛНЫ */
-.wave {
-    position: absolute;
-    width: 300%; /* Увеличиваем ширину, чтобы растянуть волны */
-    height: 30vh;
-    left: -100%; /* Сдвигаем влево, чтобы волны начинались за пределами экрана */
-    background: rgba(39, 227, 248, 0.904);
-    clip-path: ellipse(80% 60% at 50% 50%); /* Делаем волны шире и плавнее */
-    animation: waveFlow 12s linear infinite;
-    opacity: 0.6;
-    transition: transform 0.2s ease-out;
+@keyframes anim-snow-fall {
+  0% { transform: translateY(0) translateX(0) rotate(0deg); opacity:1; }
+  100% { transform: translateY(120vh) translateX(30px) rotate(360deg); opacity:0; }
 }
 
-
-/* Индивидуальные слои волн (7 штук) */
-.wave:nth-child(1) {
-    top: -5%;
-    animation-duration: 15s;
-    opacity: 0.4;
+/* Petal style (outer = fall, inner = windShake) */
+.anim-petal {
+  position: absolute;
+  top: -10vh;
+  transform-origin: center;
+  animation: anim-petal-fall linear forwards;
+  will-change: transform, opacity;
 }
-.wave:nth-child(2) {
-    top: 10%;
-    animation-duration: 18s;
-    opacity: 0.35;
+.anim-petal-inner {
+  width:100%; height:100%;
+  background: radial-gradient(circle at 35% 35%, #FFEDC9, #EFC18D, #C78C52);
+  filter: blur(0.3px);
+  border-radius: 60% 40% 70% 30%;
+  animation: anim-petal-wind 2.8s ease-in-out infinite;
 }
-.wave:nth-child(3) {
-    top: 25%;
-    animation-duration: 20s;
-    opacity: 0.3;
+@keyframes anim-petal-fall {
+  0% { transform: translateY(0) rotateZ(0deg) rotateX(0deg); opacity:1; }
+  80% { opacity:0.95; }
+  100% { transform: translateY(110vh) rotateZ(360deg) rotateX(200deg); opacity:0; }
 }
-.wave:nth-child(4) {
-    top: 40%;
-    animation-duration: 16s;
-    opacity: 0.25;
-}
-.wave:nth-child(5) {
-    top: 55%;
-    animation-duration: 19s;
-    opacity: 0.2;
-}
-.wave:nth-child(6) {
-    top: 70%;
-    animation-duration: 22s;
-    opacity: 0.15;
-}
-.wave:nth-child(7) {
-    top: 85%;
-    animation-duration: 25s;
-    opacity: 0.1;
+@keyframes anim-petal-wind {
+  0% { transform: translateX(0) rotateZ(0deg); }
+  25% { transform: translateX(-6px) rotateZ(-8deg); }
+  50% { transform: translateX(4px) rotateZ(4deg); }
+  75% { transform: translateX(-3px) rotateZ(-6deg); }
+  100% { transform: translateX(0) rotateZ(0deg);}
 }
 
-/* Анимация волны */
-@keyframes waveFlow {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
-
-/* =========================================================
-   PREMIUM GOLD PETALS — MULTI SHAPES + WIND MOVEMENT
-========================================================= */
-
-/* Контейнер остаётся без изменений */
-.petal-container {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 21 !important;
-    pointer-events: none;
-}
-
-/* Базовый стиль лепестка */
-.petal {
-    position: absolute;
-    top: -10vh;
-    width: 12px; /* Уменьшили ширину для реалистичности */
-    height: 20px; /* Вытянутая форма */
-    aspect-ratio: 1.6/1; /* Соотношение сторон */
-    opacity: 0.85;
-    filter: blur(0.2px) drop-shadow(0 0 1px rgba(0, 0, 0, 0.1)); /* Лёгкая тень для объёма */
-    animation: fall linear forwards;
-    transform-origin: center; /* Центр вращения */
-}
-
-/* Внутренняя часть лепестка с текстурой и градиентом */
-.petal-inner {
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(
-        circle at 30% 30%,
-        rgba(244, 116, 116, 0.997) 0%,
-        rgb(241, 88, 88) 50%,
-        rgb(255, 0, 0) 100%
-    );
-    border-radius: inherit; /* Наследуем скругление от родителя */
-    animation: windShake 3.5s ease-in-out infinite;
-    box-shadow: inset 0 0 2px rgba(255, 255, 255, 0.3); /* Внутренний блик */
-}
-
-/* 5 реалистичных форм лепестков */
-.petal.shape1 { border-radius: 50% 30% 50% 30%; }
-.petal.shape2 { border-radius: 60% 40% 30% 70%; }
-.petal.shape3 { border-radius: 30% 60% 70% 40%; }
-.petal.shape4 { border-radius: 40% 70% 50% 30%; }
-.petal.shape5 { border-radius: 70% 30% 40% 60%; }
-
-/* Падение */
-@keyframes fall {
-    0% {
-        transform: translateY(0) rotateZ(0deg) rotateX(0deg) scale(0.8);
-        opacity: 0.9;
-    }
-    20% {
-        transform: translateY(20vh) rotateZ(45deg) rotateX(30deg) scale(1);
-    }
-    40% {
-        transform: translateY(40vh) rotateZ(90deg) rotateX(60deg) scale(0.95);
-    }
-    60% {
-        opacity: 0.7;
-    }
-    80% {
-        transform: translateY(80vh) rotateZ(180deg) rotateX(120deg) scale(0.9);
-    }
-    100% {
-        transform: translateY(110vh) rotateZ(270deg) rotateX(180deg) scale(0.8);
-        opacity: 0;
-    }
-}
-
-
-/* Движение ветра / дрожание */
-@keyframes windShake {
-    0%, 100% { transform: translateX(0) rotateZ(0deg); }
-    10%      { transform: translateX(-8px) rotateZ(-10deg); }
-    30%      { transform: translateX(6px) rotateZ(8deg); }
-    50%      { transform: translateX(-4px) rotateZ(-5deg); }
-    70%      { transform: translateX(3px) rotateZ(5deg); }
-}
-
+/* small helper: hide animations quickly */
+.anim-hidden { display:none !important; }
 
 
 /* -----------------------------------------------
@@ -301,7 +197,6 @@ body .haze {
 /*  
 -----------------------------------------------------------
  2) GLOBAL RESET  
- Очищаем дефолтные стили браузера, чтобы всё выглядело одинаково.
 -----------------------------------------------------------
 */
 * {
@@ -322,8 +217,6 @@ html, body {
 /*  
 -----------------------------------------------------------
  3) GLOBAL CONTAINER  
- Центрирует MiniApp на ПК.  
- На мобильных — занимает всю ширину.
 -----------------------------------------------------------
 */
 .container {
@@ -336,7 +229,6 @@ html, body {
 /*  
 -----------------------------------------------------------
  4) HEADINGS & TEXT  
- Чёткая типографика в стиле iOS.
 -----------------------------------------------------------
 */
 h1 {
@@ -364,8 +256,6 @@ p {
 /*  
 -----------------------------------------------------------
  5) BUTTONS  
- Основные кнопки MiniApp.  
- Мягкая анимация нажатия.
 -----------------------------------------------------------
 */
 .button {
@@ -405,7 +295,6 @@ p {
 /*  
 -----------------------------------------------------------
  6) CARDS  
- Карточки для услуг, мастеров и записей.
 -----------------------------------------------------------
 */
 .card {
@@ -424,7 +313,6 @@ p {
 /*  
 -----------------------------------------------------------
  7) INPUTS  
- Чистые поля ввода в стиле Telegram + iOS.
 -----------------------------------------------------------
 */
 .input {
@@ -446,7 +334,6 @@ p {
 /*  
 -----------------------------------------------------------
  8) DIVIDERS  
- Линии-разделители между элементами.
 -----------------------------------------------------------
 */
 .divider {
@@ -459,7 +346,6 @@ p {
 /*  
 -----------------------------------------------------------
  9) ANIMATIONS  
- Лёгкие эффектные появления.
 -----------------------------------------------------------
 */
 .fade-in {
@@ -482,7 +368,7 @@ p {
 
 /*  
 -----------------------------------------------------------
- 10) NAVBAR (если понадобится)
+ 10) NAVBAR 
 -----------------------------------------------------------
 */
 .navbar {
@@ -502,7 +388,6 @@ p {
 /*  
 -----------------------------------------------------------
  11) UTILS  
- Маленькие удобные CSS классы.
 -----------------------------------------------------------
 */
 .mt-1 { margin-top: var(--space-1); }

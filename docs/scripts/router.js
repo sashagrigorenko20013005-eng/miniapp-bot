@@ -1,133 +1,63 @@
-
+// router.js (hash-based)
 import HomeScreen from './screens/home.js';
 import ServicesScreen from './screens/services.js';
 import MastersScreen from './screens/masters.js';
 import CalendarScreen from './screens/calendar.js';
 import ConfirmScreen from './screens/confirm.js';
-/*
-------------------------------------------------------------
- 2) Определяем маршруты приложения.
- Ключ — URL-хеш, значение — экран.
- Если пользователь вводит неизвестный маршрут,
- будет открыт home.
-------------------------------------------------------------
-*/
+import BookingsScreen from './screens/bookings.js';
+import BookingsDateScreen from './screens/bookingsDate.js';
+import BookingDetailScreen from './screens/bookingDetail.js';
+import ProfileScreen from './screens/profile.js';
+import ChatScreen from './screens/chat.js';
+
 const routes = {
-    '': HomeScreen,
-    '/': HomeScreen,
-    '/services': ServicesScreen,
-    '/masters': MastersScreen,
-    '/calendar': CalendarScreen,
-    '/confirm': ConfirmScreen,
+  '': HomeScreen,
+  '/': HomeScreen,
+  '/services': ServicesScreen,
+  '/masters': MastersScreen,
+  '/calendar': CalendarScreen,
+  '/confirm': ConfirmScreen,
+  '/bookings': BookingsScreen,
+  '/bookings/date': BookingsDateScreen,
+  '/booking': BookingDetailScreen, // usage: #/booking?id=123
+  '/profile': ProfileScreen,
+  '/chat': ChatScreen
 };
 
-
-/*
-------------------------------------------------------------
- 3) Получение текущего маршрута.
- Формат хеша в Telegram:
- #/services
- #/calendar?serviceId=4
-------------------------------------------------------------
-*/
 function parseLocation() {
-    const hash = window.location.hash || '#/';
-
-    // Удаляем # в начале
-    let clean = hash.slice(1);
-
-    // Разделяем путь и параметры
-    const [path, queryString] = clean.split('?');
-
-    const params = {};
-
-    if (queryString) {
-        const queryParts = queryString.split('&');
-        queryParts.forEach(part => {
-            const [key, value] = part.split('=');
-            params[key] = decodeURIComponent(value || '');
-        });
-    }
-
-    return { path, params };
+  const hash = window.location.hash || '#/';
+  const clean = hash.slice(1);
+  const [path, queryString] = clean.split('?');
+  const params = {};
+  if (queryString) {
+    queryString.split('&').forEach(part=>{
+      const [k,v]=part.split('=');
+      params[k]=decodeURIComponent(v||'');
+    });
+  }
+  return { path, params };
 }
 
-
-/*
-------------------------------------------------------------
- 4) ФУНКЦИЯ: navigate(path, params)
- Позволяет программно менять страницу:
- router.navigate('/masters', { serviceId: 1 })
-------------------------------------------------------------
-*/
 export const router = {
-    navigate(path, params = {}) {
-        const query = new URLSearchParams(params).toString();
-        window.location.hash = query ? `${path}?${query}` : path;
-    }
+  navigate(path, params = {}) {
+    const query = new URLSearchParams(params).toString();
+    window.location.hash = query ? `${path}?${query}` : path;
+  }
 };
 
-
-/*
-------------------------------------------------------------
- 5) ФУНКЦИЯ РЕНДЕРИНГА
- 1) Находим экран
- 2) Вызываем его render()
- 3) Затем afterRender() — привязка событий
- 4) Плавная анимация появления
-------------------------------------------------------------
-*/
 async function render() {
-    const { path, params } = parseLocation();
-
-    const screen = routes[path] || HomeScreen;
-
-    const app = document.getElementById('app');
-    if (!app) {
-        console.error("❌ ERROR: <div id='app'> не найден в index.html");
-        return;
-    }
-
-    // CSS-класс для fade анимации
-    app.classList.add('fade-out');
-
-    // Маленькая пауза перед сменой контента (анимация)
-    await new Promise(resolve => setTimeout(resolve, 150));
-
-    // Очищаем содержимое
-    app.innerHTML = '';
-
-    // Рендер экрана
-    app.innerHTML = await screen.render(params);
-
-    // Привязываем события (кнопки, клики)
-    if (screen.afterRender) {
-        screen.afterRender(params);
-    }
-
-    // Убираем анимацию исчезновения и включаем появление
-    app.classList.remove('fade-out');
-    app.classList.add('fade-in');
-
-    // Через 300ms убираем fade-in (чтобы повторно сработало)
-    setTimeout(() => app.classList.remove('fade-in'), 300);
+  const { path, params } = parseLocation();
+  const screen = routes[path] || HomeScreen;
+  const app = document.getElementById('app');
+  if (!app) return console.error('No #app');
+  app.classList.add('fade-out');
+  await new Promise(r => setTimeout(r, 120));
+  app.innerHTML = await screen.render(params);
+  if (screen.afterRender) screen.afterRender(params);
+  app.classList.remove('fade-out');
+  app.classList.add('fade-in');
+  setTimeout(()=>app.classList.remove('fade-in'), 300);
 }
 
-
-/*
-------------------------------------------------------------
- 6) Следим за изменением хеша:
- Пользователь нажал кнопку → изменился hash → вызываем render()
-------------------------------------------------------------
-*/
 window.addEventListener('hashchange', render);
-
-
-/*
-------------------------------------------------------------
- 7) Инициализация роутера при загрузке MiniApp
-------------------------------------------------------------
-*/
-document.addEventListener('DOMContentLoaded', () => {
-    render(); // Первый рендер
-});
+document.addEventListener('DOMContentLoaded', render);
